@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Geo.js by morganherlocker</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/morganherlocker/geo.js">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Geo.js</h1>
+            <h2>a node.js library for performing gis operations</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/morganherlocker/geo.js/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/morganherlocker/geo.js/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a name="geojs" class="anchor" href="#geojs"><span class="octicon octicon-link"></span></a>geo.js</h1>
+
+<p>a node.js library for performing geospatial operations with geojson</p>
+
+<p>Please note that this api is still a bit unstable. I expect most of the core stuff to be nailed down in the next couple weeks though. If you notice any bugs, please submit an issue.</p>
+
+<pre><code>npm install geo.js
+</code></pre>
+
+<hr><p><strong>Features</strong></p>
+
+<ul>
+<li>load</li>
+<li>point</li>
+<li>linestring</li>
+<li>polygon</li>
+<li>extent</li>
+<li>center</li>
+<li>combine</li>
+<li>distance</li>
+<li>buffer</li>
+<li>nearest</li>
+<li>tin</li>
+</ul><p><strong>Planned Features</strong></p>
+
+<p>Additional feature requests welcomed and encouraged. To request a feature, please add a <a href="https://github.com/morganherlocker/geo.js/issues">github issue</a> with a description.</p>
+
+<ul>
+<li>tag</li>
+<li>centroid</li>
+<li>area</li>
+<li>contour</li>
+<li>filter</li>
+<li>intersect</li>
+<li>quantile</li>
+<li>reclass</li>
+<li>remove</li>
+<li>style</li>
+<li>union</li>
+<li>erase</li>
+<li>smooth</li>
+</ul><hr><p><strong><em>Examples:</em></strong></p>
+
+<p><strong>load</strong></p>
+
+<p>Loads a feature collection or geometry from a file.</p>
+
+<pre><code>var g = require('geo')
+g.load('path/to/file/example.json', function(layer, err){
+  if(err) throw err
+  console.log(layer)
+})
+</code></pre>
+
+<p><strong>point</strong></p>
+
+<p>Creates a point feature based on an x and a y coordinate. Properties can be added optionally.</p>
+
+<pre><code>var g = require('geo')
+var point1 = g.point(-75.343, 39.984)
+var point2 = g.point(-75.343, 39.984, {name: 'point 1', population: 5000})
+console.log(point1)
+console.log(point2)
+</code></pre>
+
+<p><strong>linestring</strong></p>
+
+<p>Creates a linestring feature based on a coordinate array. Properties can be added optionally.</p>
+
+<pre><code>var g = require('geo')
+var linestring1 = g.point([[102.0, -10.0], [103.0, 1.0], [104.0, 0.0], [130.0, 4.0]])
+var linestring2 = g.point([[102.0, -10.0], [103.0, 1.0], [104.0, 0.0], [130.0, 4.0]], 
+  {name: 'line 1', distance: 145})
+console.log(linestring1)
+console.log(linestring2)
+</code></pre>
+
+<p><strong>polygon</strong></p>
+
+<p>Creates a polygon feature based on a coordinate array. Properties can be added optionally.</p>
+
+<pre><code>var g = require('geo')
+var polygon1 = g.point([[[20.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]])
+var polygon2 = g.point([[[20.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]], 
+  {name: 'line 1', distance: 145})
+console.log(polygon1)
+console.log(polygon2)
+</code></pre>
+
+<p><strong>extent</strong></p>
+
+<p>Calculates the extent of all features and returns a bounding box.</p>
+
+<pre><code>var g = require('geo')
+g.load('path/to/file/example.json', function(layer, err){
+  if(err) throw err
+  g.extent(layer, function(extent){
+    console.log(extent)
+  })
+})
+</code></pre>
+
+<p><strong>center</strong></p>
+
+<p>Calculates the absolute center point of all features.</p>
+
+<pre><code>var g = require('geo')
+g.load('path/to/file/example.json', function(layer, err){
+  if(err) throw err
+  g.center(layer, function(center){
+    console.log(center)
+  })
+})
+</code></pre>
+
+<p><strong>combine</strong></p>
+
+<p>Combines an array of point, linestring, or polygon features into multipoint, multilinestring, or multipolygon features</p>
+
+<pre><code>var g = require('geo')
+var p1 = {
+    "type": "Point",
+    "coordinates": [
+      50,
+      51
+    ]
+  }
+  var p2 = {
+    "type": "Point",
+    "coordinates": [
+      100,
+      101
+    ]
+  }
+  g.combine([p1, p2], function(err, combined){
+    if(err) throw err
+    console.log(combined)
+  })
+</code></pre>
+
+<p><strong>buffer</strong></p>
+
+<p>Buffers a point feature to a given radius.</p>
+
+<pre><code>var g = require('geo')
+var p = {
+  "type": "Point",
+  "coordinates": [
+    0,
+    0.05
+  ]
+}
+g.buffer(p, 10, function(err, buffered){
+  if(err) throw err
+  console.log(buffered)
+})
+</code></pre>
+
+<p><strong>distance</strong></p>
+
+<p>Calculates the distance between two point features.</p>
+
+<pre><code>var g = require('geo')
+var point1 = { 
+  "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [-75.343, 39.984]}
+}
+var point2 = { 
+  "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [-75.534, 39.123]}
+}
+g.distance(point1, point2, 'miles', function(err, distance){
+  if(err) throw err
+  console.log(distance)
+})
+</code></pre>
+
+<p><strong>nearest</strong></p>
+
+<p>Returns the neares point feature.</p>
+
+<pre><code>var g = require('geo')    
+var inPoint = { 
+  "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [-75.4, 39.4]},
+  "properties": { 
+    "name": "Location A",
+    "category": "Store"
+  }
+}
+var inFeatures = { 
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [-75.343, 39.984]},
+      "properties": { 
+        "name": "Location A",
+        "category": "Store"
+      }
+    },
+    { "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [-75.833, 39.284]},
+      "properties": { 
+        "name": "Location B",
+        "category": "House"
+      }
+    },
+    { "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [ -75.534, 39.123]},
+      "properties": { 
+        "name": "Location C",
+        "category": "Office"
+      }
+    }
+  ]
+}
+g.nearest(inPoint, inFeatures, function(err, outPoint){
+  if(err) throw err
+  var nearest = { 
+    "type": "Feature",
+    "geometry": {"type": "Point", "coordinates": [ -75.33, 39.44]},
+    "properties": { 
+      "name": "Location C",
+      "category": "Office"
+    }
+  }
+})
+</code></pre>
+
+<p><strong>tin</strong></p>
+
+<p>Takes a set of points and the name of a z-value property and creates a tin (Triangulated Irregular Network). These are often used for developing elevation contour maps or stepped heat visualizations.</p>
+
+<pre><code>var g = require('geo')
+var z = 'elevation'
+g.load('/path/to/pointsfeatures/Points3.geojson', function(err, points){
+  g.tin(points, function(err, z, tin){
+    if(err) throw err
+    console.log(tin)
+  })
+})
+</code></pre>
+
+<hr><p><strong><em>Development</em></strong></p>
+
+<p><strong>Run Tests</strong>
+mocha test/*</p>
+
+<hr><p><strong><em>Credits</em></strong></p>
+
+<p>This library is built and maintained by <a href="https://github.com/morganherlocker" class="user-mention">@morganherlocker</a>. If you would like to contribute, please do! :)</p>
+
+<p>I have taken a "picasso" approach to building this library, borrowing from existing code when available and modifying it to meet coding styles and standards of geo.js. Here is a list of places I have pulled ideas and/or code from (all open source or public domain, as far as I know):</p>
+
+<p><a href="https://github.com/ironwallaby/delaunay">https://github.com/ironwallaby/delaunay</a></p>
+
+<p><a href="https://github.com/jasondavies/conrec.js">https://github.com/jasondavies/conrec.js</a></p>
+
+<p><a href="http://stackoverflow.com/a/839931/461015">http://stackoverflow.com/a/839931/461015</a></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Haversine_formula">http://en.wikipedia.org/wiki/Haversine_formula</a></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm">http://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm</a> </p>
+
+<p><a href="https://github.com/mbloch/mapshaper">https://github.com/mbloch/mapshaper</a></p>
+
+<p><a href="http://en.wikipedia.org/wiki/Delaunay_triangulation">http://en.wikipedia.org/wiki/Delaunay_triangulation</a></p>
+
+<p><a href="http://svn.osgeo.org/grass/grass/branches/releasebranch_6_4/vector/v.overlay/main.c">http://svn.osgeo.org/grass/grass/branches/releasebranch_6_4/vector/v.overlay/main.c</a></p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/morganherlocker">morganherlocker</a> can be found on <a href="https://github.com/morganherlocker/geo.js">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>

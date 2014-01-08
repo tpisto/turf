@@ -1,321 +1,1065 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Geo.js by morganherlocker</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=640" />
 
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>turf by morganherlocker</title>
   </head>
+
   <body>
+    <a id="forkme_banner" href="https://github.com/morganherlocker/turf">View on GitHub</a>
+    <div class="shell">
 
       <header>
-        <h1>Geo.js</h1>
-        <p>a node.js library for performing gis operations</p>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>turf</h1>
+            <h2>a node.js library for performing gis operations</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
       </header>
 
-      <div id="banner">
-        <span id="logo"></span>
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/morganherlocker/turf/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/morganherlocker/turf/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
 
-        <a href="https://github.com/morganherlocker/geo.js" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/morganherlocker/geo.js/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/morganherlocker/geo.js/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
 
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
         <h1>
-<a name="geojs" class="anchor" href="#geojs"><span class="octicon octicon-link"></span></a>geo.js</h1>
+<a name="turf" class="anchor" href="#turf"><span class="octicon octicon-link"></span></a>turf</h1>
 
-<p>a node.js library for performing geospatial operations with geojson</p>
+<p><img src="https://raw.github.com/morganherlocker/turf/master/img/turf.png" alt="turf"></p>
 
-<p>Please note that this api is still a bit unstable. I expect most of the core stuff to be nailed down in the next couple weeks though. If you notice any bugs, please submit an issue.</p>
+<p><strong><em>a node.js library for performing geospatial operations with geojson</em></strong></p>
 
-<pre><code>npm install geo.js
-</code></pre>
+<p>All features are written in a functional manner with no side effects. In nearly all cases, they accept objects created by the point, linestring, polygon, and featurecollection functions, but these are simply for convenience. Any valid geojson Feature of FeatureCollection will do.</p>
 
-<hr><p><strong>Features</strong></p>
+<hr><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<div class="highlight highlight-bash"><pre>npm install turf
+</pre></div>
+
+<p>Turf can also be run in a browser. To use it, download the <a href="https://raw.github.com/morganherlocker/turf/master/turf.min.js">minified file</a>, and include it in a script tag.</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"turf.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span> 
+</pre></div>
+
+<p>It can also be installed using bower:</p>
+
+<div class="highlight highlight-bash"><pre>bower install turf
+</pre></div>
+
+<hr><h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<h4>
+<a name="geometry" class="anchor" href="#geometry"><span class="octicon octicon-link"></span></a>geometry</h4>
 
 <ul>
-<li>load</li>
-<li>point</li>
-<li>linestring</li>
-<li>polygon</li>
-<li>extent</li>
-<li>center</li>
-<li>combine</li>
-<li>distance</li>
-<li>buffer</li>
-<li>nearest</li>
-<li>tin</li>
+<li><a href="#load">load</a></li>
+<li><a href="#save">save</a></li>
+<li><a href="#point">point</a></li>
+<li><a href="#linestring">linestring</a></li>
+<li><a href="#polygon">polygon</a></li>
+<li><a href="#featurecollection">featurecollection</a></li>
+</ul><h4>
+<a name="joins" class="anchor" href="#joins"><span class="octicon octicon-link"></span></a>joins</h4>
+
+<ul>
+<li><a href="#inside">inside</a></li>
+<li><a href="#tag">tag</a></li>
+</ul><h4>
+<a name="data" class="anchor" href="#data"><span class="octicon octicon-link"></span></a>data</h4>
+
+<ul>
+<li><a href="#remove">remove</a></li>
+<li><a href="#filter">filter</a></li>
+<li><a href="#sample">sample</a></li>
+</ul><h4>
+<a name="measurement" class="anchor" href="#measurement"><span class="octicon octicon-link"></span></a>measurement</h4>
+
+<ul>
+<li><a href="#distance">distance</a></li>
+<li><a href="#nearest">nearest</a></li>
+<li><a href="#bboxPolygon">bboxPolygon</a></li>
+<li><a href="#envelope">envelope</a></li>
+<li><a href="#extent">extent</a></li>
+<li><a href="#square">square</a></li>
+<li><a href="#size">size</a></li>
+<li><a href="#center">center</a></li>
+<li><a href="#centroid">centroid</a></li>
+<li><a href="#midpoint">midpoint</a></li>
+</ul><h4>
+<a name="interpolation" class="anchor" href="#interpolation"><span class="octicon octicon-link"></span></a>interpolation</h4>
+
+<ul>
+<li><a href="#tin">tin</a></li>
+<li><a href="#grid">grid</a></li>
+<li><a href="#planepoint">planepoint</a></li>
+<li><a href="#contour">contour</a></li>
+</ul><h4>
+<a name="classification" class="anchor" href="#classification"><span class="octicon octicon-link"></span></a>classification</h4>
+
+<ul>
+<li><a href="#quantile">quantile</a></li>
+<li><a href="#jenks">jenks</a></li>
+<li><a href="#reclass">reclass</a></li>
+</ul><h4>
+<a name="aggregation" class="anchor" href="#aggregation"><span class="octicon octicon-link"></span></a>aggregation</h4>
+
+<ul>
+<li><a href="#average">average</a></li>
+<li><a href="#median">median</a></li>
+<li><a href="#sum">sum</a></li>
+<li><a href="#min">min</a></li>
+<li><a href="#max">max</a></li>
+<li><a href="#count">count</a></li>
+<li><a href="#deviation">deviation</a></li>
+<li><a href="#variance">variance</a></li>
+<li><a href="#aggregate">aggregate</a></li>
+</ul><h4>
+<a name="transformation" class="anchor" href="#transformation"><span class="octicon octicon-link"></span></a>transformation</h4>
+
+<ul>
+<li><a href="#buffer">buffer</a></li>
+<li><a href="#bezier">bezier</a></li>
+<li><a href="#simplify">simplify</a></li>
+<li><a href="#union">union</a></li>
+<li><a href="#intersect">intersect</a></li>
+<li><a href="#erase">erase</a></li>
+</ul><h4>
+<a name="misc" class="anchor" href="#misc"><span class="octicon octicon-link"></span></a>misc</h4>
+
+<ul>
+<li><a href="#flip">flip</a></li>
+<li><a href="#explode">explode</a></li>
+<li><a href="#combine">combine</a></li>
 </ul><p><strong>Planned Features</strong></p>
 
-<p>Additional feature requests welcomed and encouraged. To request a feature, please add a <a href="https://github.com/morganherlocker/geo.js/issues">github issue</a> with a description.</p>
+<p>Additional feature requests welcomed and encouraged. To request a feature, please add a <a href="https://github.com/morganherlocker/turf/issues">github issue</a> with a description.</p>
 
 <ul>
-<li>tag</li>
-<li>centroid</li>
+<li>concave</li>
+<li>clockwise</li>
+<li>krige</li>
+<li>cluster</li>
+<li>interval</li>
+<li>cluster</li>
+<li>interpolate</li>
 <li>area</li>
-<li>contour</li>
-<li>filter</li>
-<li>intersect</li>
-<li>quantile</li>
-<li>reclass</li>
-<li>remove</li>
-<li>style</li>
-<li>union</li>
-<li>erase</li>
 <li>smooth</li>
-</ul><hr><p><strong><em>Examples:</em></strong></p>
+</ul><hr><h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples:</h2>
 
-<p><strong>load</strong></p>
+<h3>
+<a name="load" class="anchor" href="#load"><span class="octicon octicon-link"></span></a>load</h3>
 
-<p>Loads a feature collection or geometry from a file.</p>
+<p>Loads a Feature or FeaturCollection from a file.</p>
 
-<pre><code>var g = require('geo')
-g.load('path/to/file/example.json', function(layer, err){
-  if(err) throw err
-  console.log(layer)
-})
-</code></pre>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="nx">geojsonFile</span> <span class="o">=</span> <span class="s1">'/path/to/file/tress.geojson'</span>
 
-<p><strong>point</strong></p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">geoJsonFile</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">trees</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">trees</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
 
-<p>Creates a point feature based on an x and a y coordinate. Properties can be added optionally.</p>
+<h3>
+<a name="save" class="anchor" href="#save"><span class="octicon octicon-link"></span></a>save</h3>
 
-<pre><code>var g = require('geo')
-var point1 = g.point(-75.343, 39.984)
-var point2 = g.point(-75.343, 39.984, {name: 'point 1', population: 5000})
-console.log(point1)
-console.log(point2)
-</code></pre>
+<p>Saves out a feature or feature collection. 'geojson' and 'topojson' are currently supported.</p>
 
-<p><strong>linestring</strong></p>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="s1">'./testOut/poly.geojson'</span>
+<span class="kd">var</span> <span class="nx">poly</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="s1">'geojson'</span>
+<span class="nx">t</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">poly</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="c1">// 1</span>
+  <span class="nx">done</span><span class="p">()</span>
+<span class="p">})</span>
+</pre></div>
 
-<p>Creates a linestring feature based on a coordinate array. Properties can be added optionally.</p>
+<h3>
+<a name="point" class="anchor" href="#point"><span class="octicon octicon-link"></span></a>point</h3>
 
-<pre><code>var g = require('geo')
-var linestring1 = g.point([[102.0, -10.0], [103.0, 1.0], [104.0, 0.0], [130.0, 4.0]])
-var linestring2 = g.point([[102.0, -10.0], [103.0, 1.0], [104.0, 0.0], [130.0, 4.0]], 
-  {name: 'line 1', distance: 145})
-console.log(linestring1)
-console.log(linestring2)
-</code></pre>
+<p>Creates a geojson point Feature based on an x and a y coordinate. Properties can be added optionally.</p>
 
-<p><strong>polygon</strong></p>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
 
-<p>Creates a polygon feature based on a coordinate array. Properties can be added optionally.</p>
+<span class="kd">var</span> <span class="nx">point1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.343</span><span class="p">,</span> <span class="mf">39.984</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">point2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.343</span><span class="p">,</span> <span class="mf">39.984</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'point 1'</span><span class="p">,</span> <span class="nx">population</span><span class="o">:</span> <span class="mi">5000</span><span class="p">})</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">point1</span><span class="p">)</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">point2</span><span class="p">)</span>
+</pre></div>
 
-<pre><code>var g = require('geo')
-var polygon1 = g.point([[[20.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]])
-var polygon2 = g.point([[[20.0,0.0],[101.0,0.0],[101.0,1.0],[100.0,1.0],[100.0,0.0]]], 
-  {name: 'line 1', distance: 145})
-console.log(polygon1)
-console.log(polygon2)
-</code></pre>
+<h3>
+<a name="linestring" class="anchor" href="#linestring"><span class="octicon octicon-link"></span></a>linestring</h3>
 
-<p><strong>extent</strong></p>
+<p>Creates a geojson linestring Feature based on a coordinate array. Properties can be added optionally.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">linestring1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">linestring</span><span class="p">([[</span><span class="mf">102.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">103.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">104.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">130.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]])</span>
+<span class="kd">var</span> <span class="nx">linestring2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">linestring</span><span class="p">([[</span><span class="mf">102.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">103.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">104.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">130.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]],</span> 
+  <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'line 1'</span><span class="p">,</span> <span class="nx">distance</span><span class="o">:</span> <span class="mi">145</span><span class="p">})</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">linestring1</span><span class="p">)</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">linestring2</span><span class="p">)</span>
+</pre></div>
+
+<h3>
+<a name="polygon" class="anchor" href="#polygon"><span class="octicon octicon-link"></span></a>polygon</h3>
+
+<p>Creates a geojson polygon Feature based on a coordinate array. Properties can be added optionally.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">polygon1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">([[[</span><span class="mf">20.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">101.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">101.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],[</span><span class="mf">100.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],[</span><span class="mf">100.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polygon2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">([[[</span><span class="mf">20.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">101.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="mf">101.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],[</span><span class="mf">100.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">],[</span><span class="mf">100.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]],</span> 
+  <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'line 1'</span><span class="p">,</span> <span class="nx">distance</span><span class="o">:</span> <span class="mi">145</span><span class="p">})</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">polygon1</span><span class="p">)</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">polygon2</span><span class="p">)</span>
+</pre></div>
+
+<h3>
+<a name="featurecollection" class="anchor" href="#featurecollection"><span class="octicon octicon-link"></span></a>featurecollection</h3>
+
+<p>Creates a geojson FeatureCollection based on an array of features.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.343</span><span class="p">,</span> <span class="mf">39.984</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location A'</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.833</span><span class="p">,</span> <span class="mf">39.284</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location B'</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.534</span><span class="p">,</span> <span class="mf">39.123</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location C'</span><span class="p">})</span>
+
+<span class="kd">var</span> <span class="nx">fc</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">])</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fc</span><span class="p">)</span>
+</pre></div>
+
+<h3>
+<a name="extent" class="anchor" href="#extent"><span class="octicon octicon-link"></span></a>extent</h3>
 
 <p>Calculates the extent of all features and returns a bounding box.</p>
 
-<pre><code>var g = require('geo')
-g.load('path/to/file/example.json', function(layer, err){
-  if(err) throw err
-  g.extent(layer, function(extent){
-    console.log(extent)
-  })
-})
-</code></pre>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
 
-<p><strong>center</strong></p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'path/to/file/example.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">features</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">extent</span><span class="p">(</span><span class="nx">features</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">extent</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">extent</span><span class="p">)</span> <span class="c1">// [minX, minY, maxX, maxY]</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="square" class="anchor" href="#square"><span class="octicon octicon-link"></span></a>square</h3>
+
+<p>Calculates the minimum square bounding box for another bounding box.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">bbox</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">]]</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">square</span><span class="p">(</span><span class="nx">bbox</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">square</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">square</span><span class="p">)</span> <span class="c1">// [-2.5, 0, 7.5, 10]</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="size" class="anchor" href="#size"><span class="octicon octicon-link"></span></a>size</h3>
+
+<p>Takes a bbox and returns a new bbox with a size expanded or contracted by a factor of X.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">bbox</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">size</span><span class="p">(</span><span class="nx">bbox</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">doubled</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">doubled</span><span class="p">)</span> <span class="c1">// [-10, -10, 20, 20]</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="center" class="anchor" href="#center"><span class="octicon octicon-link"></span></a>center</h3>
 
 <p>Calculates the absolute center point of all features.</p>
 
-<pre><code>var g = require('geo')
-g.load('path/to/file/example.json', function(layer, err){
-  if(err) throw err
-  g.center(layer, function(center){
-    console.log(center)
-  })
-})
-</code></pre>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
 
-<p><strong>combine</strong></p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'path/to/file/example.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">layer</span><span class="p">,</span> <span class="nx">err</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">center</span><span class="p">(</span><span class="nx">layer</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">center</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">center</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
 
-<p>Combines an array of point, linestring, or polygon features into multipoint, multilinestring, or multipolygon features</p>
+<h3>
+<a name="bboxpolygon" class="anchor" href="#bboxpolygon"><span class="octicon octicon-link"></span></a>bboxPolygon</h3>
 
-<pre><code>var g = require('geo')
-var p1 = {
-    "type": "Point",
-    "coordinates": [
-      50,
-      51
-    ]
-  }
-  var p2 = {
-    "type": "Point",
-    "coordinates": [
-      100,
-      101
-    ]
-  }
-  g.combine([p1, p2], function(err, combined){
-    if(err) throw err
-    console.log(combined)
-  })
-</code></pre>
+<p>Takes a bbox and returns the equivalent polygon feature.</p>
 
-<p><strong>buffer</strong></p>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">bbox</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
 
-<p>Buffers a point feature to a given radius.</p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">bboxPolygon</span><span class="p">(</span><span class="nx">bbox</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">poly</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">poly</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
 
-<pre><code>var g = require('geo')
-var p = {
-  "type": "Point",
-  "coordinates": [
-    0,
-    0.05
-  ]
-}
-g.buffer(p, 10, function(err, buffered){
-  if(err) throw err
-  console.log(buffered)
-})
-</code></pre>
+<h3>
+<a name="envelope" class="anchor" href="#envelope"><span class="octicon octicon-link"></span></a>envelope</h3>
 
-<p><strong>distance</strong></p>
+<p>Takes a Feature or FeatureCollection and returns a rectangular polygon feature that encompasses all vertices.</p>
 
-<p>Calculates the distance between two point features.</p>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.343</span><span class="p">,</span> <span class="mf">39.984</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location A'</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.833</span><span class="p">,</span> <span class="mf">39.284</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location B'</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.534</span><span class="p">,</span> <span class="mf">39.123</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location C'</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">fc</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">])</span>
 
-<pre><code>var g = require('geo')
-var point1 = { 
-  "type": "Feature",
-  "geometry": {"type": "Point", "coordinates": [-75.343, 39.984]}
-}
-var point2 = { 
-  "type": "Feature",
-  "geometry": {"type": "Point", "coordinates": [-75.534, 39.123]}
-}
-g.distance(point1, point2, 'miles', function(err, distance){
-  if(err) throw err
-  console.log(distance)
-})
-</code></pre>
+<span class="nx">t</span><span class="p">.</span><span class="nx">envelope</span><span class="p">(</span><span class="nx">fc</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">envelopePoly</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">envelopePoly</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
 
-<p><strong>nearest</strong></p>
+<h3>
+<a name="centroid" class="anchor" href="#centroid"><span class="octicon octicon-link"></span></a>centroid</h3>
 
-<p>Returns the neares point feature.</p>
+<p>Calculates the centroid of a polygon Feature or FeatureCollection using the geometric mean of all vertices. This lessons the effect of small islands and artifacts when calculating the centroid of a set of polygons.</p>
 
-<pre><code>var g = require('geo')    
-var inPoint = { 
-  "type": "Feature",
-  "geometry": {"type": "Point", "coordinates": [-75.4, 39.4]},
-  "properties": { 
-    "name": "Location A",
-    "category": "Store"
-  }
-}
-var inFeatures = { 
-  "type": "FeatureCollection",
-  "features": [
-    { "type": "Feature",
-      "geometry": {"type": "Point", "coordinates": [-75.343, 39.984]},
-      "properties": { 
-        "name": "Location A",
-        "category": "Store"
-      }
-    },
-    { "type": "Feature",
-      "geometry": {"type": "Point", "coordinates": [-75.833, 39.284]},
-      "properties": { 
-        "name": "Location B",
-        "category": "House"
-      }
-    },
-    { "type": "Feature",
-      "geometry": {"type": "Point", "coordinates": [ -75.534, 39.123]},
-      "properties": { 
-        "name": "Location C",
-        "category": "Office"
-      }
-    }
-  ]
-}
-g.nearest(inPoint, inFeatures, function(err, outPoint){
-  if(err) throw err
-  var nearest = { 
-    "type": "Feature",
-    "geometry": {"type": "Point", "coordinates": [ -75.33, 39.44]},
-    "properties": { 
-      "name": "Location C",
-      "category": "Office"
-    }
-  }
-})
-</code></pre>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">poly</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span> <span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
 
-<p><strong>tin</strong></p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">centroid</span><span class="p">(</span><span class="nx">poly</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">centroid</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">centroid</span><span class="p">)</span> <span class="c1">// a point at 5, 5</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="flip" class="anchor" href="#flip"><span class="octicon octicon-link"></span></a>flip</h3>
+
+<p>Takes a point, linestring, polygon, or featurecollection, and flips all of its coordinates from [x, y] to [y, x].</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[[.</span><span class="mi">2</span><span class="p">,.</span><span class="mi">2</span><span class="p">],</span> <span class="p">[.</span><span class="mi">3</span><span class="p">,.</span><span class="mi">3</span><span class="p">],[.</span><span class="mi">1</span><span class="p">,.</span><span class="mi">2</span><span class="p">]]])</span>
+<span class="nx">t</span><span class="p">.</span><span class="nx">flip</span><span class="p">(</span><span class="nx">poly</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">flipped</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">flipped</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="explode" class="anchor" href="#explode"><span class="octicon octicon-link"></span></a>explode</h3>
+
+<p>Takes a Feature or FeatureCollection and return all vertices as a collection of points.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">poly</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span> <span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">explode</span><span class="p">(</span><span class="nx">poly</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">vertices</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">vertices</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="combine" class="anchor" href="#combine"><span class="octicon octicon-link"></span></a>combine</h3>
+
+<p>Combines feature collection of point, linestring, or polygon features into multipoint, multilinestring, or multipolygon features.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">fc</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">combine</span><span class="p">(</span><span class="nx">fc</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">combined</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">combined</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="remove" class="anchor" href="#remove"><span class="octicon octicon-link"></span></a>remove</h3>
+
+<p>Removes any features from a feature collection that match a property value.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">trees</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'oak'</span><span class="p">}),</span> 
+                                 <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'dogwood'</span><span class="p">}),</span> 
+                                 <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'maple'</span><span class="p">})])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">points</span><span class="p">,</span> <span class="s1">'species'</span><span class="p">,</span> <span class="s1">'dogwood'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="filter" class="anchor" href="#filter"><span class="octicon octicon-link"></span></a>filter</h3>
+
+<p>Keeps any features from a feature collection that match a property value.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">trees</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'oak'</span><span class="p">}),</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'birch'</span><span class="p">}),</span> 
+  <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'oak'</span><span class="p">}),</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'redwood'</span><span class="p">}),</span> 
+  <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'maple'</span><span class="p">}),</span> 
+  <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">species</span><span class="o">:</span> <span class="s1">'oak'</span><span class="p">})</span>
+  <span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">trees</span><span class="p">,</span> <span class="s1">'species'</span><span class="p">,</span> <span class="s1">'oak'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">oaks</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">oaks</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="inside" class="anchor" href="#inside"><span class="octicon octicon-link"></span></a>inside</h3>
+
+<p>Checks to see if a point is inside of a polygon. The polygon can be convex or concave.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">poly</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">pt</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">75</span><span class="p">)</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">inside</span><span class="p">(</span><span class="nx">pt</span><span class="p">,</span> <span class="nx">poly</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">isInside</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">isInside</span><span class="p">)</span> <span class="c1">// true</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="buffer" class="anchor" href="#buffer"><span class="octicon octicon-link"></span></a>buffer</h3>
+
+<p>Buffers a point, linestring, or polygon feature to a given radius. Units supported are miles, kilometers, and degrees.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">pt</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="s1">'miles'</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">buffer</span><span class="p">(</span><span class="nx">pt</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">unit</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">buffered</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">buffered</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="distance" class="anchor" href="#distance"><span class="octicon octicon-link"></span></a>distance</h3>
+
+<p>Calculates the distance between two point features in degrees, radians, miles, or kilometers. This uses the haversine formula to account for global curvature.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">point1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.343</span><span class="p">,</span> <span class="mf">39.984</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">point2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.534</span><span class="p">,</span> <span class="mf">39.123</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">unit</span> <span class="o">=</span> <span class="s1">'miles'</span> <span class="c1">// or 'kilometers', 'degrees', 'radians'</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">distance</span><span class="p">(</span><span class="nx">point1</span><span class="p">,</span> <span class="nx">point2</span><span class="p">,</span> <span class="nx">unit</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">distance</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">distance</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="nearest" class="anchor" href="#nearest"><span class="octicon octicon-link"></span></a>nearest</h3>
+
+<p>Returns the nearest point feature.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>    
+<span class="kd">var</span> <span class="nx">inPoint</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.4</span><span class="p">,</span> <span class="mf">39.4</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location A'</span><span class="p">})</span>
+
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.343</span><span class="p">,</span> <span class="mf">39.984</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location B'</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.833</span><span class="p">,</span> <span class="mf">39.284</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location C'</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.534</span><span class="p">,</span> <span class="mf">39.123</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">'Location D'</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">inFeatures</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">nearest</span><span class="p">(</span><span class="nx">inPoint</span><span class="p">,</span> <span class="nx">inFeatures</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">closestPoint</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">closestPoint</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="tin" class="anchor" href="#tin"><span class="octicon octicon-link"></span></a>tin</h3>
 
 <p>Takes a set of points and the name of a z-value property and creates a tin (Triangulated Irregular Network). These are often used for developing elevation contour maps or stepped heat visualizations.</p>
 
-<pre><code>var g = require('geo')
-var z = 'elevation'
-g.load('/path/to/pointsfeatures/Points3.geojson', function(err, points){
-  g.tin(points, function(err, z, tin){
-    if(err) throw err
-    console.log(tin)
-  })
-})
-</code></pre>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="s1">'elevation'</span>
 
-<hr><p><strong><em>Development</em></strong></p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'/path/to/pointsfeatures/elevationPoints.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">points</span><span class="p">){</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">tin</span><span class="p">(</span><span class="nx">points</span><span class="p">,</span> <span class="nx">z</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">tin</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tin</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
 
-<p><strong>Run Tests</strong>
-mocha test/*</p>
+<h3>
+<a name="grid" class="anchor" href="#grid"><span class="octicon octicon-link"></span></a>grid</h3>
 
-<hr><p><strong><em>Credits</em></strong></p>
+<p>Takes a bounding box and a cell depth and outputs a feature collection of points in a grid.</p>
 
-<p>This library is built and maintained by <a href="https://github.com/morganherlocker" class="user-mention">@morganherlocker</a>. If you would like to contribute, please do! :)</p>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">depth</span> <span class="o">=</span> <span class="mi">15</span>
 
-<p>I have taken a "picasso" approach to building this library, borrowing from existing code when available and modifying it to meet coding styles and standards of geo.js. Here is a list of places I have pulled ideas and/or code from (all open source or public domain, as far as I know):</p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">grid</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="nx">depth</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">grid</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">grid</span><span class="p">)</span> <span class="c1">// 15x15 grid of points in a FeatureCollection</span>
+<span class="p">})</span>
+</pre></div>
 
-<p><a href="https://github.com/ironwallaby/delaunay">https://github.com/ironwallaby/delaunay</a></p>
+<h3>
+<a name="planepoint" class="anchor" href="#planepoint"><span class="octicon octicon-link"></span></a>planepoint</h3>
 
-<p><a href="https://github.com/jasondavies/conrec.js">https://github.com/jasondavies/conrec.js</a></p>
+<p>Takes a trianglular plane and calculates the z value for a point on the plane.</p>
 
-<p><a href="http://stackoverflow.com/a/839931/461015">http://stackoverflow.com/a/839931/461015</a></p>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">point</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="o">-</span><span class="mf">75.3221</span><span class="p">,</span> <span class="mf">39.529</span><span class="p">)</span>
+<span class="c1">// triangle is a polygon with "a", "b", and "c" values representing</span>
+<span class="c1">// the values of the coordinates in order.</span>
+<span class="kd">var</span> <span class="nx">triangle</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">(</span>
+    <span class="p">[[[</span><span class="o">-</span><span class="mf">75.1221</span><span class="p">,</span><span class="mf">39.57</span><span class="p">],[</span><span class="o">-</span><span class="mf">75.58</span><span class="p">,</span><span class="mf">39.18</span><span class="p">],[</span><span class="o">-</span><span class="mf">75.97</span><span class="p">,</span><span class="mf">39.86</span><span class="p">]]],</span> 
+    <span class="p">{</span><span class="s2">"a"</span><span class="o">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">"b"</span><span class="o">:</span> <span class="mi">122</span><span class="p">,</span> <span class="s2">"c"</span><span class="o">:</span> <span class="mi">44</span><span class="p">}</span>
+  <span class="p">)</span>
 
-<p><a href="http://en.wikipedia.org/wiki/Haversine_formula">http://en.wikipedia.org/wiki/Haversine_formula</a></p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">planepoint</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span> <span class="nx">triangle</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">zValue</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">zValue</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
 
-<p><a href="http://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm">http://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm</a> </p>
+<h3>
+<a name="midpoint" class="anchor" href="#midpoint"><span class="octicon octicon-link"></span></a>midpoint</h3>
 
-<p><a href="https://github.com/mbloch/mapshaper">https://github.com/mbloch/mapshaper</a></p>
+<p>Takes two point features and returns the mid point.</p>
 
-<p><a href="http://en.wikipedia.org/wiki/Delaunay_triangulation">http://en.wikipedia.org/wiki/Delaunay_triangulation</a></p>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-<p><a href="http://svn.osgeo.org/grass/grass/branches/releasebranch_6_4/vector/v.overlay/main.c">http://svn.osgeo.org/grass/grass/branches/releasebranch_6_4/vector/v.overlay/main.c</a></p>
+<span class="nx">t</span><span class="p">.</span><span class="nx">midpoint</span><span class="p">(</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">midpoint</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">midpoint</span><span class="p">)</span>
+<span class="p">})</span>
+
+</pre></div>
+
+<h3>
+<a name="quantile" class="anchor" href="#quantile"><span class="octicon octicon-link"></span></a>quantile</h3>
+
+<p>Takes a set of features, a property name, and a set of percentiles and outputs a quantile array. This can be passed as a break array to the contour function.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">propertyName</span> <span class="o">=</span> <span class="s1">'elevation'</span>
+<span class="kd">var</span> <span class="nx">percentiles</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">99</span><span class="p">]</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./testIn/Points3.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pts</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">quantile</span><span class="p">(</span><span class="nx">pts</span><span class="p">,</span> <span class="nx">propertyName</span><span class="p">,</span> <span class="nx">percentiles</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">quantiles</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">quantiles</span><span class="p">)</span> <span class="c1">// [ 12, 25, 29, 52, 76, 99, 143 ]</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="jenks" class="anchor" href="#jenks"><span class="octicon octicon-link"></span></a>jenks</h3>
+
+<p>Takes a set of features, a property name, and the desired number of breaks and outputs an array of natural breaks. This classification can be used in the contour function or for theming.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">propertyName</span> <span class="o">=</span> <span class="s1">'elevation'</span>
+<span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./testIn/Points3.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pts</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">jenks</span><span class="p">(</span><span class="nx">pts</span><span class="p">,</span> <span class="s1">'elevation'</span><span class="p">,</span> <span class="nx">num</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">breaks</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+    <span class="nx">done</span><span class="p">()</span> <span class="c1">// [ 11, 12, 18, 25, 29, 41, 50, 55, 76, 90, 143 ]</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="reclass" class="anchor" href="#reclass"><span class="octicon octicon-link"></span></a>reclass</h3>
+
+<p>Takes a feature collection, a in field, an out field, and an array of translations and outputs an identical feature collection with the out field property populated.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">inField</span> <span class="o">=</span> <span class="s1">'elevation'</span><span class="p">,</span>
+    <span class="nx">outField</span> <span class="o">=</span> <span class="s1">'heightIndex'</span><span class="p">,</span>
+    <span class="c1">// 0 to 20 will map to 1, 20 to 40 will map to 2, etc.</span>
+    <span class="nx">translations</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span> <span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="kc">Infinity</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./testIn/Points3.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pts</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">reclass</span><span class="p">(</span><span class="nx">pts</span><span class="p">,</span> <span class="nx">inField</span><span class="p">,</span> <span class="nx">outField</span><span class="p">,</span> <span class="nx">translations</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">outPts</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">outPts</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="contour" class="anchor" href="#contour"><span class="octicon octicon-link"></span></a>contour</h3>
+
+<p>Takes a FeatureCollection of points with z values and an array of value breaks and generates contour polygons.  This is a great way to visualize interpolated density on a map.  It is often used for elevation maps, weather maps, and isocrones.  The main advantage over a heat map is that contours allow you to see definitive value boundaries, and the polygons can be used to aggregate data.  For example, you could get the 5000 ft elevation contour of a mountain and the 10000 ft elevation contour, then aggregate the number of trees in each to see how elevation affects tree survival.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="s1">'elevation'</span>
+<span class="kd">var</span> <span class="nx">resolution</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="kd">var</span> <span class="nx">breaks</span> <span class="o">=</span> <span class="p">[.</span><span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span>  <span class="mi">95</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">]</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'../path/to/points.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">points</span><span class="p">){</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">contour</span><span class="p">(</span><span class="nx">points</span><span class="p">,</span> <span class="nx">z</span><span class="p">,</span> <span class="nx">resolution</span><span class="p">,</span> <span class="nx">breaks</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">contours</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">contours</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="sample" class="anchor" href="#sample"><span class="octicon octicon-link"></span></a>sample</h3>
+
+<p>Takes a feature collection and returns N random features as a feature collection.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./testIn/Points3.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pts</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">sample</span><span class="p">(</span><span class="nx">pts</span><span class="p">,</span> <span class="nx">num</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">outPts</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">outPts</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="tag" class="anchor" href="#tag"><span class="octicon octicon-link"></span></a>tag</h3>
+
+<p>Performs a spatial join on a set of points from a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./testIn/tagPoints.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">points</span><span class="p">){</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./testIn/tagPolygons.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polygons</span><span class="p">){</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">tag</span><span class="p">(</span><span class="nx">points</span><span class="p">,</span> <span class="nx">polygons</span><span class="p">,</span> <span class="s1">'polyID'</span><span class="p">,</span> <span class="s1">'containingPolyID'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">taggedPoints</span><span class="p">){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">taggedPoints</span><span class="p">)</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="bezier" class="anchor" href="#bezier"><span class="octicon octicon-link"></span></a>bezier</h3>
+
+<p>Takes a linestring and outputs a curved version of the line.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">resolution</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="kd">var</span> <span class="nx">intensity</span> <span class="o">=</span> <span class="p">.</span><span class="mi">85</span>
+<span class="kd">var</span> <span class="nx">lineIn</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">linestring</span><span class="p">([</span>
+      <span class="p">[</span>
+        <span class="o">-</span><span class="mf">80.08724212646484</span><span class="p">,</span>
+        <span class="mf">32.77428536643231</span>
+      <span class="p">],</span>
+      <span class="p">[</span>
+        <span class="o">-</span><span class="mf">80.03746032714844</span><span class="p">,</span>
+        <span class="mf">32.84007757059952</span>
+      <span class="p">],</span>
+      <span class="p">[</span>
+        <span class="o">-</span><span class="mf">80.01548767089844</span><span class="p">,</span>
+        <span class="mf">32.74512501406368</span>
+      <span class="p">],</span>
+      <span class="p">[</span>
+        <span class="o">-</span><span class="mf">79.95368957519531</span><span class="p">,</span>
+        <span class="mf">32.850461360442424</span>
+      <span class="p">]</span>
+    <span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">bezier</span><span class="p">(</span><span class="nx">lineIn</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="p">.</span><span class="mi">85</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">lineOut</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lineOut</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="simplify" class="anchor" href="#simplify"><span class="octicon octicon-link"></span></a>simplify</h3>
+
+<p>Takes a feature collection of polygons or linestrings and returns a simplified version, preserving topology of shared boundaries.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">quantization</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="kd">var</span> <span class="nx">minimumArea</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'./path/to/complex.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polys</span><span class="p">){</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">simplify</span><span class="p">(</span><span class="nx">polys</span><span class="p">,</span> <span class="nx">quantization</span><span class="p">,</span> <span class="nx">minimumArea</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">simplified</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">simplified</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="average" class="anchor" href="#average"><span class="octicon octicon-link"></span></a>average</h3>
+
+<p>Calculates the average value of a field for points within a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">100</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">300</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">average</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'pop_avg'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">averaged</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">averaged</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_avg</span><span class="p">)</span> <span class="c1">// 400</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">averaged</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_avg</span><span class="p">)</span> <span class="c1">// 200</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="median" class="anchor" href="#median"><span class="octicon octicon-link"></span></a>median</h3>
+
+<p>Calculates the median value of a field for points within a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">100</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">300</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">median</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'pop_median'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">medianed</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">medianed</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_median</span><span class="p">)</span> <span class="c1">// 400</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">medianed</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_median</span><span class="p">)</span> <span class="c1">// 200</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="sum" class="anchor" href="#sum"><span class="octicon octicon-link"></span></a>sum</h3>
+
+<p>Calculates the sum value of a field for points within a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">400</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">sum</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'pop_sum'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">summed</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">summed</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_sum</span><span class="p">)</span> <span class="c1">// 900</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">summed</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_sum</span><span class="p">)</span> <span class="c1">// 1300</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="min" class="anchor" href="#min"><span class="octicon octicon-link"></span></a>min</h3>
+
+<p>Calculates the min value of a field for points within a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">400</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'pop_min'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">minPolys</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">minPolys</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_min</span><span class="p">)</span> <span class="c1">// 400</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">minPolys</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_min</span><span class="p">)</span> <span class="c1">// 200</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="max" class="anchor" href="#max"><span class="octicon octicon-link"></span></a>max</h3>
+
+<p>Calculates the min value of a field for points within a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">400</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'pop_max'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">maxPolys</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">maxPolys</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_max</span><span class="p">)</span> <span class="c1">// 500</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">maxPolys</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_max</span><span class="p">)</span> <span class="c1">// 600</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="count" class="anchor" href="#count"><span class="octicon octicon-link"></span></a>count</h3>
+
+<p>Calculates the count of points within a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">400</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">count</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'point_count'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">counted</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">counted</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">point_count</span><span class="p">)</span> <span class="c1">// 2</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">counted</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">point_count</span><span class="p">)</span> <span class="c1">// 3</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="deviation" class="anchor" href="#deviation"><span class="octicon octicon-link"></span></a>deviation</h3>
+
+<p>Calculates the standard deviation value of a field for points within a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">400</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">deviation</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'pop_deviation'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">deviated</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">deviated</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_deviation</span><span class="p">)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">deviated</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_deviation</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="variance" class="anchor" href="#variance"><span class="octicon octicon-link"></span></a>variance</h3>
+
+<p>Calculates the standard deviation value of a field for points within a set of polygons.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">400</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">500</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">variance</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'pop_variance'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">varianced</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">varianced</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_variance</span><span class="p">)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">varianced</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">pop_variance</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="aggregate" class="anchor" href="#aggregate"><span class="octicon octicon-link"></span></a>aggregate</h3>
+
+<p>Takes a set of polygons, a set of points, and an array of aggregations, then perform them. Sum, average, count, min, max, and deviation are  supported.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">poly1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">poly2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">polygon</span><span class="p">([[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">]]])</span>
+<span class="kd">var</span> <span class="nx">polyFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">poly1</span><span class="p">,</span> <span class="nx">poly2</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">pt1</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt2</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">600</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt3</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">100</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt4</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">pt5</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">point</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span> <span class="p">{</span><span class="nx">population</span><span class="o">:</span> <span class="mi">300</span><span class="p">})</span>
+<span class="kd">var</span> <span class="nx">ptFC</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">featurecollection</span><span class="p">([</span><span class="nx">pt1</span><span class="p">,</span> <span class="nx">pt2</span><span class="p">,</span> <span class="nx">pt3</span><span class="p">,</span> <span class="nx">pt4</span><span class="p">,</span> <span class="nx">pt5</span><span class="p">])</span>
+<span class="kd">var</span> <span class="nx">aggregations</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nx">aggregation</span><span class="o">:</span> <span class="s1">'sum'</span><span class="p">,</span>
+    <span class="nx">inField</span><span class="o">:</span> <span class="s1">'population'</span><span class="p">,</span>
+    <span class="nx">outField</span><span class="o">:</span> <span class="s1">'pop_sum'</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">aggregation</span><span class="o">:</span> <span class="s1">'average'</span><span class="p">,</span>
+    <span class="nx">inField</span><span class="o">:</span> <span class="s1">'population'</span><span class="p">,</span>
+    <span class="nx">outField</span><span class="o">:</span> <span class="s1">'pop_avg'</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">aggregation</span><span class="o">:</span> <span class="s1">'median'</span><span class="p">,</span>
+    <span class="nx">inField</span><span class="o">:</span> <span class="s1">'population'</span><span class="p">,</span>
+    <span class="nx">outField</span><span class="o">:</span> <span class="s1">'pop_median'</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">aggregation</span><span class="o">:</span> <span class="s1">'min'</span><span class="p">,</span>
+    <span class="nx">inField</span><span class="o">:</span> <span class="s1">'population'</span><span class="p">,</span>
+    <span class="nx">outField</span><span class="o">:</span> <span class="s1">'pop_min'</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">aggregation</span><span class="o">:</span> <span class="s1">'max'</span><span class="p">,</span>
+    <span class="nx">inField</span><span class="o">:</span> <span class="s1">'population'</span><span class="p">,</span>
+    <span class="nx">outField</span><span class="o">:</span> <span class="s1">'pop_max'</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">aggregation</span><span class="o">:</span> <span class="s1">'deviation'</span><span class="p">,</span>
+    <span class="nx">inField</span><span class="o">:</span> <span class="s1">'population'</span><span class="p">,</span>
+    <span class="nx">outField</span><span class="o">:</span> <span class="s1">'pop_deviation'</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">aggregation</span><span class="o">:</span> <span class="s1">'variance'</span><span class="p">,</span>
+    <span class="nx">inField</span><span class="o">:</span> <span class="s1">'population'</span><span class="p">,</span>
+    <span class="nx">outField</span><span class="o">:</span> <span class="s1">'pop_variance'</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">aggregation</span><span class="o">:</span> <span class="s1">'count'</span><span class="p">,</span>
+    <span class="nx">inField</span><span class="o">:</span> <span class="s1">''</span><span class="p">,</span>
+    <span class="nx">outField</span><span class="o">:</span> <span class="s1">'point_count'</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">aggregate</span><span class="p">(</span><span class="nx">polyFC</span><span class="p">,</span> <span class="nx">ptFC</span><span class="p">,</span> <span class="nx">aggregations</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polys</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">polys</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="union" class="anchor" href="#union"><span class="octicon octicon-link"></span></a>union</h3>
+
+<p>Calculates the union of two polygon features or feature collections.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/testIn/Intersect1.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polys1</span><span class="p">){</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/testIn/Intersect2.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polys2</span><span class="p">){</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">union</span><span class="p">(</span><span class="nx">polys1</span><span class="p">,</span> <span class="nx">polys2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">unioned</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">unioned</span><span class="p">)</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="intersect" class="anchor" href="#intersect"><span class="octicon octicon-link"></span></a>intersect</h3>
+
+<p>Calculates the intersection of two polygon features or feature collections.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/testIn/Intersect1.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polys1</span><span class="p">){</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/testIn/Intersect2.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polys2</span><span class="p">){</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">intersect</span><span class="p">(</span><span class="nx">polys1</span><span class="p">,</span> <span class="nx">polys2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">intersected</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">intersected</span><span class="p">)</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<h3>
+<a name="erase" class="anchor" href="#erase"><span class="octicon octicon-link"></span></a>erase</h3>
+
+<p>Calculates polygon 1 minus polygon 2.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'turf'</span><span class="p">)</span>
+
+<span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/testIn/Intersect1.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polys1</span><span class="p">){</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/testIn/Intersect2.geojson'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">polys2</span><span class="p">){</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">erase</span><span class="p">(</span><span class="nx">polys1</span><span class="p">,</span> <span class="nx">polys2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">erased</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">erased</span><span class="p">)</span>
+    <span class="p">})</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</pre></div>
+
+<hr><p>This library is built and maintained by <a href="https://twitter.com/morganherlocker">@morganherlocker</a> :)</p>
       </section>
+
       <footer>
-        <p>Project maintained by <a href="https://github.com/morganherlocker">morganherlocker</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/morganherlocker">morganherlocker</a> can be found on <a href="https://github.com/morganherlocker/turf">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
       </footer>
+
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

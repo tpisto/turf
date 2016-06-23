@@ -26,6 +26,6 @@
     "tape": "~3.5.0"
   },
   "dependencies": {
-    "jsts": "1.1.2"
+    "jsts": "https://github.com/tpisto/jsts.git"
   }
 }
